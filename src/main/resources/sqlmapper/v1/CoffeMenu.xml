@@ -15,11 +15,11 @@
     <!--메뉴 등록-->
     <insert id="insertMenu">
         INSERT INTO coffee_menu (coffee, kind, price)
-        VALUES (#{strCoffee}, #{strKind}, #{strPrice})
+        VALUES(#{strCoffee},#{strKind},CAST(#{strPrice} as INTEGER))
     </insert>
 
     <!--메뉴 삭제-->
     <delete id="deleteMenu">
-        DELETE FROM coffee_menu WHERE no = #{strNo}
+        DELETE FROM coffee_menu WHERE no = CAST(#{strNo} as INTEGER)
     </delete>
 </mapper>
