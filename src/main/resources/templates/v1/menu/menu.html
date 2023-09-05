@@ -78,7 +78,8 @@
         <td th:text="${list.get('reg_day')}">등록일</td>
         <td th:text="${list.get('mod_day')}">수정일</td>
         <td>수정</td>
-        <td>삭제</td>
+        <!--<td><a href="/menu/menu_del?no=${list.get('no')}">삭제</a></td>-->
+        <td><a th:href="@{/v1/menu_del(no=${list.get('no')})}">삭제</a></td>
       </tr>
 
 

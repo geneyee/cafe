@@ -73,4 +73,9 @@ public class MenuService {
     public void insertMenu(String strCoffee, String strKind, String strPrice) {
         menuDao.insertMenu(strCoffee, strKind, strPrice);
     }
+
+    // 메뉴 삭제
+    public void deleteMenu(String strNo) {
+        menuDao.deleteMenu(strNo);
+    }
 }

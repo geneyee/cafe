@@ -1,6 +1,7 @@
 package com.boot.SpringBootMaria.v1.controller;
 
 import com.boot.SpringBootMaria.v1.service.MenuService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Log4j2
 @Controller
 @RequestMapping("/v1")
 public class MenuController {
@@ -46,6 +48,17 @@ public class MenuController {
                                @RequestParam("price") String strPrice) {
 
         menuService.insertMenu(strCoffee, strKind, strPrice);
+
+        return "redirect:/v1/menu";
+    }
+
+    // 메뉴 삭제
+    @GetMapping("/menu_del")
+    public String doDelete(@RequestParam("no") String strNo) {
+
+        log.info(" ================== strNo : " + strNo + "==================");
+
+        menuService.deleteMenu(strNo);
 
         return "redirect:/v1/menu";
     }

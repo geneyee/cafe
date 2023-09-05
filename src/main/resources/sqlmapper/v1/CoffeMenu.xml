@@ -17,4 +17,9 @@
         INSERT INTO coffee_menu (coffee, kind, price)
         VALUES (#{strCoffee}, #{strKind}, #{strPrice})
     </insert>
+
+    <!--메뉴 삭제-->
+    <delete id="deleteMenu">
+        DELETE FROM coffee_menu WHERE no = #{strNo}
+    </delete>
 </mapper>

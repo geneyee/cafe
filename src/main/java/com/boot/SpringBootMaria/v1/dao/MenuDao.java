@@ -16,4 +16,7 @@ public interface MenuDao {
     void insertMenu(@Param("strCoffee") String strCoffee,
                    @Param("strKind") String strKind,
                    @Param("strPrice") String strPrice);
+
+    // 메뉴 삭제
+    void deleteMenu(@Param("strNo") String strNo);
 }
