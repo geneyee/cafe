@@ -62,4 +62,25 @@ public class MenuController {
 
         return "redirect:/v1/menu";
     }
+
+    // 메뉴 수정
+    @GetMapping("/menu_up")
+    public String doUpdate(@RequestParam("no") String strNo, Model model) {
+
+        Map<String, Object> map = menuService.doUpList(strNo);
+        model.addAttribute("map", map);
+        return "/v1/menu/menu_up";
+    }
+
+    // 메뉴 수정
+    @PostMapping("/menu_up")
+    public String doUpdatePost(@RequestParam("no") String strNo,
+                               @RequestParam("coffee") String strCoffee,
+                               @RequestParam("kind") String strKind,
+                               @RequestParam("price") String strPrice) {
+
+        menuService.updateMenu(strNo, strCoffee, strKind, strPrice);
+
+        return "redirect:/v1/menu";
+    }
 }

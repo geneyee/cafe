@@ -78,4 +78,15 @@ public class MenuService {
     public void deleteMenu(String strNo) {
         menuDao.deleteMenu(strNo);
     }
+
+    // 메뉴 조회(수정)
+    public Map<String, Object> doUpList(String strNo) {
+        Map<String, Object> map = menuDao.doUpList(strNo);
+        return map;
+    }
+
+    // 메뉴 수정
+    public void updateMenu(String strNo, String strCoffee, String strKind, String strPrice) {
+        menuDao.updateMenu(strNo, strCoffee, strKind, strPrice);
+    }
 }

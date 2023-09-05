@@ -9,7 +9,7 @@
         SELECT no, coffee, kind, price,
         DATE_FORMAT(reg_day,'%Y.%m.%d') AS reg_day,
         DATE_FORMAT(mod_day,'%Y.%m.%d') AS mod_day
-        FROM coffee_menu;
+        FROM coffee_menu
     </select>
 
     <!--메뉴 등록-->
@@ -22,4 +22,21 @@
     <delete id="deleteMenu">
         DELETE FROM coffee_menu WHERE no = CAST(#{strNo} as INTEGER)
     </delete>
+
+    <!--메뉴 수정-->
+    <update id="updateMenu">
+        UPDATE coffee_menu
+        SET coffee = #{strCoffee}, kind = #{strKind}, price = CAST(#{strPrice} as INTEGER)
+        WHERE no = CAST(#{strNo} as INTEGER)
+    </update>
+
+    <!--조회(수정)-->
+    <select id="doUpList" resultType="map">
+        SELECT no, coffee, kind, price,
+        DATE_FORMAT(reg_day,'%Y.%m.%d') AS reg_day,
+        DATE_FORMAT(mod_day,'%Y.%m.%d') AS mod_day
+        FROM coffee_menu
+        WHERE no = CAST(#{strNo} as INTEGER)
+    </select>
+
 </mapper>
