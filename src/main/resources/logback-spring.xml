@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+        <Pattern>[%d{yyyy-MM-ddHH:mm:ss}:%-3relative] [%thread] %-5level %logger{36} -%msg%n</Pattern>
+    </encoder>
+    </appender>
+
+     <!--Logback은5단계의로그레벨을가진다.
+        심각도수준은off > Error > Warn > Info > Debug > Trace 이다.
+     -->
+    <logger name="com.boot.SpringBootMaria" level="Info"/>
+    <root level="Debug">
+        <appender-ref ref="console"/>
+    </root>
+</configuration>
