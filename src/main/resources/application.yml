@@ -25,8 +25,9 @@ spring:
     username: boot
     password: boot
 
-# Configuration mybatis
-# mybatis.mapper-locations=classpath:sqlmap/**/*.xml
+--- # Configuration mybatis
+mybatis:
+  mapper-locations: classpath:sqlmapper/**/*.xml
 # mybatis.configuration.map-underscore-to-camel-case=true
 
 ... # End

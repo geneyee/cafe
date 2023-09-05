@@ -1,6 +1,8 @@
 package com.boot.SpringBootMaria.v1.service;
 
+import com.boot.SpringBootMaria.v1.dao.MenuDao;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,11 +14,23 @@ import java.util.Map;
 @Service
 public class MenuService {
 
+    @Autowired
+    MenuDao menuDao;
+
     public MenuService() {
         log.info("============ MenuService, 생성자 ============");
     }
 
     public List<Map<String, Object>> doList() {
+
+        List<Map<String, Object>> list = menuDao.doList();
+
+        log.info(list);
+
+        return list;
+    }
+
+    public List<Map<String, Object>> doListOld() {
 
         List<Map<String, Object>> list = new ArrayList<>();
 
