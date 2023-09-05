@@ -25,15 +25,17 @@ public class MenuController {
         map.put("mod_day", "2023-08-18");
         list.add(map);
 
-        map.clear();
+//        map.clear();
 
-        map.put("No", "2");
-        map.put("name", "카푸치노");
-        map.put("kind", "커피");
-        map.put("price", "6,000");
-        map.put("reg_day", "2023-08-18");
-        map.put("mod_day", "2023-08-18");
-        list.add(map);
+        Map<String, Object> map2 = new HashMap<>();
+
+        map2.put("No", "2");
+        map2.put("name", "카푸치노");
+        map2.put("kind", "커피");
+        map2.put("price", "6,000");
+        map2.put("reg_day", "2023-08-18");
+        map2.put("mod_day", "2023-08-18");
+        list.add(map2);
 
         // Data 송부
         model.addAttribute("list", list);
