@@ -18,9 +18,10 @@ public class MenuService {
     MenuDao menuDao;
 
     public MenuService() {
-        log.info("============ MenuService, 생성자 ============");
+//        log.info("============ MenuService, 생성자 ============");
     }
 
+    // 메뉴 조회
     public List<Map<String, Object>> doList() {
 
         List<Map<String, Object>> list = menuDao.doList();
@@ -63,9 +64,13 @@ public class MenuService {
         map3.put("mod_day", "2023-08-18");
         list.add(map3);
 
-        log.info(list);
+//        log.info(list);
 
         return list;
     }
 
+    // 메뉴 등록
+    public void insertMenu(String strCoffee, String strKind, String strPrice) {
+        menuDao.insertMenu(strCoffee, strKind, strPrice);
+    }
 }

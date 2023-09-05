@@ -11,4 +11,10 @@
         DATE_FORMAT(mod_day,'%Y.%m.%d') AS mod_day
         FROM coffee_menu;
     </select>
+
+    <!--메뉴 등록-->
+    <insert id="insertMenu">
+        INSERT INTO coffee_menu (coffee, kind, price)
+        VALUES (#{strCoffee}, #{strKind}, #{strPrice})
+    </insert>
 </mapper>
