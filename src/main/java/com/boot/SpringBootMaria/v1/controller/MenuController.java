@@ -1,5 +1,7 @@
 package com.boot.SpringBootMaria.v1.controller;
 
+import com.boot.SpringBootMaria.v1.service.MenuService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,31 +13,14 @@ import java.util.Map;
 
 @Controller
 public class MenuController {
+
+    @Autowired
+    MenuService menuService;
+
     @RequestMapping("/v1/menu")
     public String doMenu(Model model){
         // Data 만들기, List, Map
-        List<Map<String, Object>> list = new ArrayList<>();
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("No", "1");
-        map.put("name", "아이스커피");
-        map.put("kind", "커피");
-        map.put("price", "5,000");
-        map.put("reg_day", "2023-08-18");
-        map.put("mod_day", "2023-08-18");
-        list.add(map);
-
-//        map.clear();
-
-        Map<String, Object> map2 = new HashMap<>();
-
-        map2.put("No", "2");
-        map2.put("name", "카푸치노");
-        map2.put("kind", "커피");
-        map2.put("price", "6,000");
-        map2.put("reg_day", "2023-08-18");
-        map2.put("mod_day", "2023-08-18");
-        list.add(map2);
+        List<Map<String, Object>> list = menuService.doList();
 
         // Data 송부
         model.addAttribute("list", list);
