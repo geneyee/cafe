@@ -89,4 +89,11 @@ public class MenuService {
     public void updateMenu(String strNo, String strCoffee, String strKind, String strPrice) {
         menuDao.updateMenu(strNo, strCoffee, strKind, strPrice);
     }
+
+    // 조회
+    public List<Map<String, Object>> searchMenu(String startDate, String endDate, String coffee, String kind) {
+        List<Map<String, Object>> list = menuDao.searchMenu(startDate, endDate, coffee, kind);
+
+        return list;
+    }
 }

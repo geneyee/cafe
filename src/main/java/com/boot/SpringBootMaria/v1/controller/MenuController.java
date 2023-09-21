@@ -83,4 +83,19 @@ public class MenuController {
 
         return "redirect:/v1/menu";
     }
+
+    // 조회하기
+    @PostMapping("/menu_search")
+    public String doSearch(@RequestParam String startDate,
+                           @RequestParam String endDate,
+                           @RequestParam(defaultValue = "ALL") String coffee,
+                           @RequestParam String kind,
+                           Model model) {
+
+        log.info("=========== startDate : " + startDate);
+        List<Map<String, Object>> list = menuService.searchMenu(startDate, endDate, coffee, kind);
+        model.addAttribute("list", list);
+
+        return "redirect:/v1/menu";
+    }
 }

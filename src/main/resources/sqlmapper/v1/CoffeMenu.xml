@@ -12,6 +12,29 @@
         FROM coffee_menu
     </select>
 
+    <!--
+        <![CDATA[   ]]> : xml 파싱에 관여하지 않도록 처리
+        <   &lt;
+        >   &gt;
+    -->
+
+    <!--검색에 의한 쿼리-->
+    <select id="searchMenu" resultType="map">
+        SELECT no, coffee, kind, price,
+        DATE_FORMAT(reg_day,'%Y.%m.%d') AS reg_day,
+        DATE_FORMAT(mod_day,'%Y.%m.%d') AS mod_day
+        FROM coffee_menu
+        WHERE 1=1
+        AND reg_day >= DATE_FORMAT(#{startDate},'%Y.%m.%d')
+        AND reg_day &lt; DATE_FORMAT(#{endDate},'%Y.%m.%d'), INTERVAL +1 DAY)
+        <if test="coffee != ALL">
+            AND coffee LIKE CONCAT(#{coffee}, '%')
+        </if>
+        <if test="kind != ALL">
+            AND kind = #{kind}
+        </if>
+    </select>
+
     <!--메뉴 등록-->
     <insert id="insertMenu">
         INSERT INTO coffee_menu (coffee, kind, price)

@@ -28,4 +28,7 @@ public interface MenuDao {
                     @Param("strCoffee") String strCoffee,
                     @Param("strKind") String strKind,
                     @Param("strPrice") String strPrice);
+
+    // 조회
+    List<Map<String, Object>> searchMenu(String startDate, String endDate, String coffee, String kind);
 }
