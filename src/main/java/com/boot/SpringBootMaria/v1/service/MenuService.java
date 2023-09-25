@@ -91,9 +91,18 @@ public class MenuService {
     }
 
     // 조회
-    public List<Map<String, Object>> searchMenu(String startDate, String endDate, String coffee, String kind) {
-        List<Map<String, Object>> list = menuDao.searchMenu(startDate, endDate, coffee, kind);
+    public List<Map<String, Object>> doSearch(String strStartDate, String strEndDate, String strCoffee, String strKind) {
+        List<Map<String, Object>> list = menuDao.doSearch(strStartDate, strEndDate, strCoffee, strKind);
+    return list;
+    }
 
-        return list;
+    // 가격 수정
+    public int doUdatePrice(String strNo, String strPrice) {
+        return menuDao.doUpdatePrice(strNo, strPrice);
+    }
+
+    // 가격 수정 로그
+    public int doInsertLog(String strNo, String strPrice) {
+        return menuDao.doInsertLog(strNo, strPrice);
     }
 }

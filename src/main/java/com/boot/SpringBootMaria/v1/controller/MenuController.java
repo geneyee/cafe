@@ -86,16 +86,31 @@ public class MenuController {
 
     // 조회하기
     @PostMapping("/menu_search")
-    public String doSearch(@RequestParam String startDate,
-                           @RequestParam String endDate,
-                           @RequestParam(defaultValue = "ALL") String coffee,
-                           @RequestParam String kind,
+    public String doSearch(@RequestParam("start_date") String strStartDate,
+                           @RequestParam("end_date") String strEndDate,
+                           @RequestParam(value = "coffee", defaultValue = "ALL") String strCoffee,
+                           @RequestParam("kind") String strKind,
                            Model model) {
 
-        log.info("=========== startDate : " + startDate);
-        List<Map<String, Object>> list = menuService.searchMenu(startDate, endDate, coffee, kind);
+        log.info("strStartDate :"+strStartDate);
+        List<Map<String, Object>> list = menuService.doSearch(strStartDate,strEndDate, strCoffee,strKind );
         model.addAttribute("list", list);
 
+        return "/v1/menu/menu";
+    }
+
+    // 가격수정 - 다중체크
+    @PostMapping("/menu_updatePrice")
+    public String doUpdatePrice(@RequestParam("chkCoffeeNo") List<String> chkList,
+                                @RequestParam("hidden_price") String strPrice){
+
+        if (chkList != null) {
+            for (String strNo : chkList) {
+                int num1 = menuService.doUdatePrice(strNo, strPrice);
+                int num2 = menuService.doInsertLog(strNo, strPrice);
+            }
+        }
         return "redirect:/v1/menu";
     }
+
 }

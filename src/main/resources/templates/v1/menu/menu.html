@@ -38,8 +38,7 @@
 
         &nbsp;&nbsp;<input type="submit" value="조회" style="width: 80px;height: 30px;font-weight: bold; font-size: medium">
         &nbsp;&nbsp;<button style="width: 80px;height: 30px;font-weight: bold; font-size: medium"><a href="/v1/menu_ins">등록</a></button>
-        &nbsp;&nbsp;<button style="width: 80px;height: 30px;font-weight: bold; font-size: medium"><a href="~~~~">삭제</a></button>
-        <!-- <a href="javascript:loadDocArray()">test</a> -->
+          <button type="button" id="IdUpdateAll" style="width: 80px;height: 30px;font-weight: bold; font-size: medium" onclick="onModify()">가격수정</button>        <!-- <a href="javascript:loadDocArray()">test</a> -->
         <!--        <label>CheckBox : </label><span id="idCheckBox"></span>-->
       </fieldset>
 
@@ -48,6 +47,7 @@
 
   </div>
 
+  <form name="formTable" id="idFormTable" method="post" action="/v1/menu_updatePrice">
 
   <table class="table">
     <thead>
@@ -68,7 +68,7 @@
     <tbody id="t_body">
     <!--- 데이타 출력 부분 -->
       <tr th:each="list : ${list}">
-        <td>Chk</td>
+        <td><input type="checkbox" name="chkCoffeeNo" th:value="${list.get('no')}"></td>
         <!--<td th:text="${list.No}">커피No</td> -->
         <!-- 직접 쓰는거 보다는 map에서 꺼내오는것(list.get)이 더 좋은 방법 -->
         <td th:text="${list.get('no')}">커피No</td>
@@ -85,12 +85,36 @@
 
     </tbody>
   </table>
+    <input type="hidden" name="hidden_price">
+  </form>
 </div>
 
 <!-- 푸터 위치 -->
 <th:block th:replace="/v1/comm/footer :: footerFragment"></th:block>
 
+<script>
+  /* 현재 시간 날짜에 적용시키기 */
+  const now = new Date();	// 현재 날짜 및 시간
+  const time7 = new Date(now.setDate(now.getDate() - 100));	// 기간 설정
+  document.getElementById("start_date").value= time7.toISOString().slice(0,10);
+  document.getElementById("end_date").value= new Date().toISOString().slice(0,10);
 
+  /* 가격수정 */
+  function onModify(){
+    let _price = prompt("가격을 입력하세요");
+
+    if(_price == undefined){
+      return;
+     }else if(_price == ""){
+       alert("가격을 입력하세요");
+       onModify();
+     }else if(_price != ""){
+        let _frm = document.formTable;
+        _frm.hidden_price.value = _price;
+        _frm.submit();
+     }
+  }
+</script>
 </body>
 </html>
 

@@ -30,5 +30,15 @@ public interface MenuDao {
                     @Param("strPrice") String strPrice);
 
     // 조회
-    List<Map<String, Object>> searchMenu(String startDate, String endDate, String coffee, String kind);
+    List<Map<String, Object>> doSearch(@Param("strStartDate")String strStartDate,
+                                       @Param("strEndDate") String strEndDate,
+                                       @Param("strCoffee") String strCoffee,
+                                       @Param("strKind") String strKind);
+
+
+    // 가격 수정
+    int doUpdatePrice(@Param("strNo") String strNo, @Param("strPrice") String strPrice);
+
+    // 가격 수정 로그
+    int doInsertLog(@Param("strNo") String strNo, @Param("strPrice") String strPrice);
 }

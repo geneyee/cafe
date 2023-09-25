@@ -19,19 +19,19 @@
     -->
 
     <!--검색에 의한 쿼리-->
-    <select id="searchMenu" resultType="map">
+    <select id="doSearch" resultType="map">
         SELECT no, coffee, kind, price,
         DATE_FORMAT(reg_day,'%Y.%m.%d') AS reg_day,
         DATE_FORMAT(mod_day,'%Y.%m.%d') AS mod_day
         FROM coffee_menu
         WHERE 1=1
-        AND reg_day >= DATE_FORMAT(#{startDate},'%Y.%m.%d')
-        AND reg_day &lt; DATE_FORMAT(#{endDate},'%Y.%m.%d'), INTERVAL +1 DAY)
-        <if test="coffee != ALL">
-            AND coffee LIKE CONCAT(#{coffee}, '%')
+        AND reg_day >= DATE_FORMAT( #{strStartDate},'%Y%m%d')
+        AND reg_day &lt; DATE_ADD(DATE_FORMAT(#{strEndDate},'%Y%m%d'), INTERVAL +1 DAY)
+        <if test="strCoffee != 'ALL'">
+            AND coffee like CONCAT(#{strCoffee},'%')
         </if>
-        <if test="kind != ALL">
-            AND kind = #{kind}
+        <if test="strKind != 'ALL'">
+            AND kind = #{strKind}
         </if>
     </select>
 
@@ -61,5 +61,18 @@
         FROM coffee_menu
         WHERE no = CAST(#{strNo} as INTEGER)
     </select>
+    
+    <!--가격 수정-->
+    <update id="doUpdatePrice">
+        UPDATE coffee_menu
+        SET price = CAST(#{strPrice} as INTEGER)
+        WHERE no = CAST(#{strNo} as INTEGER)
+    </update>
+
+    <!--가격 수정 로그-->
+    <insert id="doInsertLog">
+        INSERT INTO log (coffee_no, price)
+        VALUES (CAST(#{strNo} as INTEGER), CAST(#{strPrice} as INTEGER))
+    </insert>
 
 </mapper>
