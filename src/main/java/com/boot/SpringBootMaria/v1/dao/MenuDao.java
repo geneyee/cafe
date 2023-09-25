@@ -41,4 +41,10 @@ public interface MenuDao {
 
     // 가격 수정 로그
     int doInsertLog(@Param("strNo") String strNo, @Param("strPrice") String strPrice);
+
+    // 가격 수정 1쿼리
+    int doUpdatePriceOne(@Param("chkList") List<String> chkList, @Param("strPrice") String strPrice);
+
+    // 가격 수정 로그 1쿼리
+    int doInsertLogOne(@Param("chkList") List<String> chkList, @Param("strPrice") String strPrice);
 }

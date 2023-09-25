@@ -97,12 +97,22 @@ public class MenuService {
     }
 
     // 가격 수정
-    public int doUdatePrice(String strNo, String strPrice) {
+    public int doUpdatePrice(String strNo, String strPrice) {
         return menuDao.doUpdatePrice(strNo, strPrice);
     }
 
     // 가격 수정 로그
     public int doInsertLog(String strNo, String strPrice) {
         return menuDao.doInsertLog(strNo, strPrice);
+    }
+
+    // 가격 수정 1쿼리
+    public int doUpdatePriceOne(List<String> chkList, String strPrice) {
+        return menuDao.doUpdatePriceOne(chkList, strPrice);
+    }
+
+    // 가격 수정 로그 1쿼리
+    public int doInsertLogOne(List<String> chkList, String strPrice) {
+        return menuDao.doInsertLogOne(chkList, strPrice);
     }
 }

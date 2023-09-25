@@ -105,10 +105,12 @@ public class MenuController {
                                 @RequestParam("hidden_price") String strPrice){
 
         if (chkList != null) {
-            for (String strNo : chkList) {
-                int num1 = menuService.doUdatePrice(strNo, strPrice);
-                int num2 = menuService.doInsertLog(strNo, strPrice);
-            }
+//            for (String strNo : chkList) {
+//                int num1 = menuService.doUpdatePrice(strNo, strPrice);
+//                int num2 = menuService.doInsertLog(strNo, strPrice);
+//            }
+            int num1 = menuService.doUpdatePriceOne(chkList, strPrice);
+            int num2 = menuService.doInsertLogOne(chkList, strPrice);
         }
         return "redirect:/v1/menu";
     }
