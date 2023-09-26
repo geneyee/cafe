@@ -20,13 +20,13 @@
     <div id="search" style="height: 150px;padding: 15px; font-size: small; width: 90%; margin-left: auto;  margin-right: auto;">
         <h3>[ Coffee Order List <span style="font-size:30px;">&#128722;</span> ]</h3>
 
-        <form name="fm_order" autocomplete="on">
+        <form name="fm_order" autocomplete="on" method="post" action="/v2/order_search">
             <fieldset>
                 <legend> [검색조건] </legend>
                 <label>등록기간</label><input type="date" id="start_date" name="start_date" min="2020-01-01" max="2023-12-31">
                 - <input type="date" id="end_date" name="end_date" min="2020-01-01" max="2023-12-31">
                 &nbsp;&nbsp;
-                <label>메뉴명</label> <input type="text" id="menu" name="menu">
+                <label>메뉴명</label> <input type="text" id="coffee" name="coffee">
                 &nbsp;&nbsp;
                 <label>고객명</label> <input type="text" id="name" name="name">
 
@@ -60,41 +60,30 @@
 
         <tbody id="t_body">
         <!--- 데이타 출력 부분 -->
-        <tr class="tr_td">
-            <td>Chk</td>
-            <th>주문번호</th>
-            <td>커피No</td>
-            <td>메뉴명</td>
-            <td>고객ID</td>
-            <td>고객명</td>
-            <td>주문일자</td>
+        <tr th:each="list : ${list}">
+            <td><input type="checkbox" name="chkCoffeeNo" th:value="${list.getNo()}"></td>
+            <td th:text="${list.getNo()}">주문번호</td>
+            <td th:text="${list.getCoffee_no()}">커피No</td>
+            <td th:text="${list.getCoffee()}">메뉴명</td>
+            <td th:text="${list.getCust_id()}">고객ID</td>
+            <td th:text="${list.getName()}">고객명</td>
+            <td th:text="${list.getReg_day()}">주문일자</td>
         </tr>
 
-        <tr class="tr_td">
-            <td>Chk</td>
-            <th>주문번호</th>
-            <td>커피No</td>
-            <td>메뉴명</td>
-            <td>고객ID</td>
-            <td>고객명</td>
-            <td>주문일자</td>
-        </tr>
-
-        <tr class="tr_td">
-            <td>Chk</td>
-            <th>주문번호</th>
-            <td>커피No</td>
-            <td>메뉴명</td>
-            <td>고객ID</td>
-            <td>고객명</td>
-            <td>주문일자</td>
-        </tr>
         </tbody>
     </table>
 </div>
 
 <!-- 푸터 위치 -->
 <th:block th:replace="/v2/comm/footer :: footerFragment"></th:block>
+
+<script>
+  /* 현재 시간 날짜에 적용시키기 */
+  const now = new Date();	// 현재 날짜 및 시간
+  const time7 = new Date(now.setDate(now.getDate() - 100));	// 기간 설정
+  document.getElementById("start_date").value= time7.toISOString().slice(0,10);
+  document.getElementById("end_date").value= new Date().toISOString().slice(0,10);
+</script>
 
 </body>
 </html>
