@@ -19,7 +19,7 @@
     <div id="search" style="height: 150px;padding: 15px; font-size: small; width: 90%; margin-left: auto;  margin-right: auto;">
         <h3>[ Member Info <span style="font-size:30px;">&#128699;</span> ]</h3>
 
-        <form name="fm_member" autocomplete="on">
+        <form name="fm_member" autocomplete="on" action="/v2/member_search" method="post">
             <fieldset>
                 <legend> [검색조건] </legend>
                 <label>등록기간</label><input type="date" id="start_date" name="start_date" min="2020-01-01" max="2023-12-31">
@@ -53,38 +53,28 @@
 
         <tbody id="t_body">
         <!--- 데이타 출력 부분 -->
-        <tr class="tr_td">
-            <td>Chk</td>
-            <th>고객ID</th>
-            <td>고객명</td>
-            <td>이메일</td>
-            <td>권한</td>
-            <td>등록일</td>
+        <tr th:each="list : ${list}">
+            <td><input type="checkbox" name="chkCoffeeNo" th:value="${list.getNo()}"></td>
+            <td th:text="${list.getCust_id()}">고객ID</th>
+            <td th:text="${list.getName()}">고객명</td>
+            <td th:text="${list.getEmail()}">이메일</td>
+            <td th:text="${list.getRole()}">권한</td>
+            <td th:text="${list.getReg_day()}">등록일</td>
         </tr>
 
-        <tr class="tr_td">
-            <td>Chk</td>
-            <th>고객ID</th>
-            <td>고객명</td>
-            <td>이메일</td>
-            <td>권한</td>
-            <td>등록일</td>
-        </tr>
-
-        <tr class="tr_td">
-            <td>Chk</td>
-            <th>고객ID</th>
-            <td>고객명</td>
-            <td>이메일</td>
-            <td>권한</td>
-            <td>등록일</td>
-        </tr>
         </tbody>
     </table>
 </div>
 
 <!-- 푸터 위치 -->
 <th:block th:replace="/v2/comm/footer :: footerFragment"></th:block>
+<<script>
+  /* 현재 시간 날짜에 적용시키기 */
+  const now = new Date();	// 현재 날짜 및 시간
+  const time7 = new Date(now.setDate(now.getDate() - 100));	// 기간 설정
+  document.getElementById("start_date").value= time7.toISOString().slice(0,10);
+  document.getElementById("end_date").value= new Date().toISOString().slice(0,10);
+ </script>
 
 </body>
 </html>
