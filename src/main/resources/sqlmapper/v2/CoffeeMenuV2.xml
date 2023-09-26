@@ -3,9 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.boot.SpringBootMaria.v1.dao.MenuDao">
-    <!--메뉴 조회-->
-    <select id="doList" resultType="map">
+<mapper namespace="com.boot.SpringBootMaria.v2.dao.MenuDaoV2">
+    <!--전체 메뉴 조회-->
+    <select id="doList" resultType="com.boot.SpringBootMaria.v2.vo.Coffee_menu">
         SELECT no, coffee, kind, price,
         DATE_FORMAT(reg_day,'%Y.%m.%d') AS reg_day,
         DATE_FORMAT(mod_day,'%Y.%m.%d') AS mod_day
@@ -18,48 +18,53 @@
         >   &gt;
     -->
 
-    <!--검색에 의한 쿼리-->
-    <select id="doSearch" resultType="map">
+    <!--검색 조회버튼 -->
+    <select id="doSearch" resultType="com.boot.SpringBootMaria.v2.vo.Coffee_menu">
         SELECT no, coffee, kind, price,
         DATE_FORMAT(reg_day,'%Y.%m.%d') AS reg_day,
         DATE_FORMAT(mod_day,'%Y.%m.%d') AS mod_day
         FROM coffee_menu
         WHERE 1=1
-        AND reg_day >= DATE_FORMAT( #{strStartDate},'%Y%m%d')
-        AND reg_day &lt; DATE_ADD(DATE_FORMAT(#{strEndDate},'%Y%m%d'), INTERVAL +1 DAY)
-        <if test="strCoffee != 'ALL'">
-            AND coffee like CONCAT(#{strCoffee},'%')
+        AND reg_day >= DATE_FORMAT( #{startDate},'%Y%m%d')
+        AND reg_day &lt; DATE_ADD(DATE_FORMAT(#{endDate},'%Y%m%d'), INTERVAL +1 DAY)
+        <if test="coffee != 'ALL'">
+            AND coffee like CONCAT(#{coffee},'%')
         </if>
-        <if test="strKind != 'ALL'">
-            AND kind = #{strKind}
+        <if test="kind != 'ALL'">
+            AND kind = #{kind}
         </if>
     </select>
 
-    <!--메뉴 등록-->
-    <insert id="insertMenu">
+    <!--검색 등록버튼-->
+    <insert id="doInsert">
         INSERT INTO coffee_menu (coffee, kind, price)
-        VALUES(#{strCoffee},#{strKind},CAST(#{strPrice} as INTEGER))
+        VALUES(#{coffee},#{kind},CAST(#{price} as INTEGER))
     </insert>
 
     <!--메뉴 삭제-->
-    <delete id="deleteMenu">
-        DELETE FROM coffee_menu WHERE no = CAST(#{strNo} as INTEGER)
+<!--    <delete id="doDelete">
+        SET FOREIGN_KEY_CHECKS = 0
+        DELETE FROM coffee_menu WHERE no = CAST(#{no} as INTEGER)
+        SET FOREIGN_KEY_CHECKS = 1
+    </delete>-->
+    <delete id="doDelete">
+        DELETE FROM coffee_menu WHERE no = CAST(#{no} as INTEGER)
     </delete>
 
     <!--메뉴 수정-->
-    <update id="updateMenu">
+    <update id="doUpdate">
         UPDATE coffee_menu
-        SET coffee = #{strCoffee}, kind = #{strKind}, price = CAST(#{strPrice} as INTEGER)
-        WHERE no = CAST(#{strNo} as INTEGER)
+        SET coffee = #{coffee}, kind = #{kind}, price = CAST(#{price} as INTEGER)
+        WHERE no = CAST(#{no} as INTEGER)
     </update>
 
     <!--조회(수정)-->
-    <select id="doUpList" resultType="map">
+    <select id="doUpList" resultType="com.boot.SpringBootMaria.v2.vo.Coffee_menu">
         SELECT no, coffee, kind, price,
         DATE_FORMAT(reg_day,'%Y.%m.%d') AS reg_day,
         DATE_FORMAT(mod_day,'%Y.%m.%d') AS mod_day
         FROM coffee_menu
-        WHERE no = CAST(#{strNo} as INTEGER)
+        WHERE no = CAST(#{no} as INTEGER)
     </select>
 
     <!--가격 수정 로그-->
@@ -71,14 +76,14 @@
     <!--가격 수정-->
     <update id="doUpdatePrice">
         UPDATE coffee_menu
-        SET price = CAST(#{strPrice} as INTEGER)
-        WHERE no = CAST(#{strNo} as INTEGER)
+        SET price = CAST(#{price} as INTEGER)
+        WHERE no = CAST(#{no} as INTEGER)
     </update>
 
     <!-- 메뉴 가격 수정 원쿼리  -->
     <update id="doUpdatePriceOne">
         Update coffee_menu set
-        price = CAST(#{strPrice} as INTEGER)
+        price = CAST(#{price} as INTEGER)
         <where>
             <foreach item="item" index="index" collection="chkList" open="no in (" separator="," close=")" nullable="true">
                 #{item}
@@ -90,7 +95,7 @@
     <insert id="doInsertLogOne">
         INSERT INTO coffee_menu_log (coffee_no, price)
         <foreach item="item" index="index" collection="chkList"  separator=" UNION ALL "  nullable="true">
-            SELECT #{item}, CAST(#{strPrice} as INTEGER) FROM DUAL
+            SELECT #{item}, CAST(#{price} as INTEGER) FROM DUAL
         </foreach>
     </insert>
 
