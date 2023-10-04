@@ -10,6 +10,7 @@ import java.util.List;
 public interface MemberDaoV2 {
     // 전체 조회
     List<Member> doList();
+
     // 이름 조회
     List<Member> doSearch(@Param("startDate") String startDate,
                           @Param("endDate") String endDate,

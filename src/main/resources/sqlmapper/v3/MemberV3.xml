@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.SpringBootMaria.v3.dao.MemberDaoV3">
+    <!--전체 조회-->
+    <select id="doList" resultType="com.boot.SpringBootMaria.v3.dto.MemberV3">
+        SELECT no, cust_id, name, email, role,
+        DATE_FORMAT(reg_day,'%Y.%m.%d') AS reg_day
+        FROM cust_info
+    </select>
+
+    <!--검색 조회-->
+    <select id="doSearch" resultType="com.boot.SpringBootMaria.v3.dto.MemberV3">
+        SELECT no, cust_id, name, email, role,
+        DATE_FORMAT(reg_day,'%Y.%m.%d') AS reg_day
+        FROM cust_info
+        WHERE 1=1
+        AND reg_day >= DATE_FORMAT( #{startDate},'%Y%m%d')
+        AND reg_day &lt; DATE_ADD(DATE_FORMAT(#{endDate},'%Y%m%d'), INTERVAL +1 DAY)
+        <if test="name != 'ALL'">
+            AND name like CONCAT(#{name}, '%')
+        </if>
+    </select>
+</mapper>
