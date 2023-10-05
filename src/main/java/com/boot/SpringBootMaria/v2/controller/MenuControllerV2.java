@@ -71,7 +71,10 @@ public class MenuControllerV2 {
     // 검색 - 가격 수정
     @PostMapping("/menu_updatePrice")
     public String doUpdatePrice(@RequestParam("chkCoffeeNo") List<String> chkList,
-                                @RequestParam("hidden_price") String price) {
+                                @RequestParam("hidden_price") String price,
+                                Model model) {
+
+        String ex_return = "redirect:/v2/menu";
 
         try {
             if (chkList != null) {
@@ -80,9 +83,11 @@ public class MenuControllerV2 {
 //            menuServiceV2.doInsertLogOne(chkList, price);
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.info("======================== Error : " + e.getMessage());
+            model.addAttribute("em", e.getMessage());
+            ex_return = "/v2/comm/ErrorPage";
         }
-        return "redirect:/v2/menu";
+        return ex_return;
     }
 
     // 커피 메뉴 수정

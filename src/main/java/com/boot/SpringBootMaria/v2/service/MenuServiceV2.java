@@ -1,5 +1,6 @@
 package com.boot.SpringBootMaria.v2.service;
 
+import com.boot.SpringBootMaria.comm.MyExceptionRuntime;
 import com.boot.SpringBootMaria.v2.dao.MenuDaoV2;
 import com.boot.SpringBootMaria.v2.vo.Coffee_menu;
 import lombok.extern.log4j.Log4j2;
@@ -71,21 +72,25 @@ public class MenuServiceV2 {
     }
 
     // 가격 수정 (다중체크) 리팩토링
-    @Transactional(rollbackFor = Exception.class)
-    public void doUpdateInsert(List<String> chkList, String price) throws FileNotFoundException {
+    @Transactional //(rollbackFor = Exception.class)
+    public void doUpdateInsert(List<String> chkList, String price) throws RuntimeException {
         log.info("============= price multi update, log insert ===============");
 
-        menuDaoV2.doUpdatePriceOne(chkList, price);
+        try {
+            menuDaoV2.doUpdatePriceOne(chkList, price);
 
-        // Checked Exception 발생 지점
+            // Checked Exception 발생 지점
 //        File file = new File("not_existing_file.txt");
 //        FileInputStream stream = new FileInputStream(file);
 
-        // Unchecked Exception 발생 지점 (ArithmeticException - RuntimeException)
-        int numerator = 1;
-        int denominator = 0;
-        int result = numerator / denominator;
-
+            // Unchecked Exception 발생 지점 (ArithmeticException - RuntimeException)
+//            int numerator = 1;
+//            int denominator = 0;
+//            int result = numerator / denominator;
+        } catch (Exception e) {
+            //throw new RuntimeException(e.getMessage());
+            throw new MyExceptionRuntime(e.getMessage(), getClass().getName());
+        }
         menuDaoV2.doInsertLogOne(chkList, price);
     }
 }
