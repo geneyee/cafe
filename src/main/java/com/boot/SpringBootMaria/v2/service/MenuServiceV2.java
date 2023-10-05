@@ -5,7 +5,11 @@ import com.boot.SpringBootMaria.comm.MyExceptionRuntime;
 import com.boot.SpringBootMaria.v2.dao.MenuDaoV2;
 import com.boot.SpringBootMaria.v2.vo.Coffee_menu;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +22,13 @@ public class MenuServiceV2 {
     private final MenuDaoV2 menuDaoV2;
     private final BootLog bootLog;
 
-    public MenuServiceV2(MenuDaoV2 menuDaoV2, BootLog bootLog){
+    @Autowired
+    PlatformTransactionManager transactionManager;
+
+    @Autowired
+    TransactionDefinition definition;
+
+    public MenuServiceV2(MenuDaoV2 menuDaoV2, BootLog bootLog) {
         this.menuDaoV2 = menuDaoV2;
         this.bootLog = bootLog;
     }
@@ -50,6 +60,7 @@ public class MenuServiceV2 {
     public void doUpdatePriceOne(List<String> chkList, String price) {
         menuDaoV2.doUpdatePriceOne(chkList, price);
     }
+
     // 검색 - 가격 수정(다중체크) - 로그 등록
     public void doInsertLogOne(List<String> chkList, String price) {
         menuDaoV2.doInsertLogOne(chkList, price);
@@ -72,6 +83,27 @@ public class MenuServiceV2 {
         menuDaoV2.doDelete(no);
     }
 
+    // 가격 수정 (다중체크) 리팩토링
+    public void doUpdateInsert(List<String> chkList, String price) throws RuntimeException {
+        try {
+            TransactionStatus status = transactionManager.getTransaction(definition);
+            menuDaoV2.doUpdatePriceOne(chkList, price);
+            transactionManager.commit(status);
+
+            TransactionStatus status2 = transactionManager.getTransaction(definition);
+            menuDaoV2.doInsertLogOne(chkList, price);
+            transactionManager.rollback(status2);
+
+        } catch (Exception e) {
+            throw new MyExceptionRuntime(e.getMessage(), getClass().getName());
+        } finally {
+            log.info("================ finally ===============");
+            bootLog.doBootLog(getClass().getName());
+        }
+
+    }
+
+/*
     // 가격 수정 (다중체크) 리팩토링
     @Transactional(propagation = Propagation.REQUIRED) //(rollbackFor = Exception.class)
     public void doUpdateInsert(List<String> chkList, String price) throws RuntimeException {
@@ -96,11 +128,12 @@ public class MenuServiceV2 {
             log.info("================ finally ===============");
             bootLog.doBootLog(getClass().getName());
         }
-
     }
 
 //    @Transactional(propagation = Propagation.REQUIRES_NEW)
 //    public void doBootLog(String strClass){
 //        menuDaoV2.doBootLog(strClass);
 //    }
+ */
+
 }
