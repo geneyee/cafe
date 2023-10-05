@@ -12,6 +12,8 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.List;
 
@@ -27,6 +29,9 @@ public class MenuServiceV2 {
 
     @Autowired
     TransactionDefinition definition;
+
+    @Autowired
+    TransactionTemplate template;
 
     public MenuServiceV2(MenuDaoV2 menuDaoV2, BootLog bootLog) {
         this.menuDaoV2 = menuDaoV2;
@@ -85,6 +90,43 @@ public class MenuServiceV2 {
 
     // 가격 수정 (다중체크) 리팩토링
     public void doUpdateInsert(List<String> chkList, String price) throws RuntimeException {
+        int rI=0;
+        int int1=0;
+        try {
+            log.info("=================== return ===================");
+            rI = template.execute(status -> {
+                menuDaoV2.doUpdatePriceOne(chkList, price);
+//                status.setRollbackOnly();
+                return int1;
+            });
+
+//            rI = template.execute(status -> {
+//                menuDaoV2.doInsertLogOne(chkList, price);
+//                return int1;
+//            });
+
+            log.info("=================== no return ===================");
+            template.equals(new TransactionCallbackWithoutResult() {
+
+                @Override
+                protected void doInTransactionWithoutResult(TransactionStatus status) {
+                    menuDaoV2.doInsertLogOne(chkList, price);
+//                    status.setRollbackOnly();
+                }
+            });
+
+        } catch (Exception e) {
+            throw new MyExceptionRuntime(e.getMessage(), getClass().getName());
+        } finally {
+            log.info("================ finally ===============");
+            bootLog.doBootLog(getClass().getName());
+        }
+    }
+
+   /*  #section 12 - 5
+    platformTransactionManager 트랜잭션 수동관리
+    // 가격 수정 (다중체크) 리팩토링
+    public void doUpdateInsert(List<String> chkList, String price) throws RuntimeException {
         try {
             TransactionStatus status = transactionManager.getTransaction(definition);
             menuDaoV2.doUpdatePriceOne(chkList, price);
@@ -100,10 +142,12 @@ public class MenuServiceV2 {
             log.info("================ finally ===============");
             bootLog.doBootLog(getClass().getName());
         }
-
     }
+*/
 
-/*
+/*  #section 12 - 1, 2, 3, 4
+    @Transactional Exception 처리 & propagation(class 분리)
+
     // 가격 수정 (다중체크) 리팩토링
     @Transactional(propagation = Propagation.REQUIRED) //(rollbackFor = Exception.class)
     public void doUpdateInsert(List<String> chkList, String price) throws RuntimeException {

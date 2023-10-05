@@ -20,7 +20,7 @@ class MenuServiceV2Test {
         List<String> chkList = new ArrayList<>();
         chkList.add("1");
         chkList.add("2");
-        String price = "4500";
+        String price = "10000";
 
         menuServiceV2.doUpdateInsert(chkList, price);
 
