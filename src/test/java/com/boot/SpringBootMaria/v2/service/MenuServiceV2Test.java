@@ -20,7 +20,11 @@ class MenuServiceV2Test {
         List<String> chkList = new ArrayList<>();
         chkList.add("1");
         chkList.add("2");
-        String price = "1500";
-        menuServiceV2.doUpdateInsert(chkList, price);
+        String price = "9900";
+        try {
+            menuServiceV2.doUpdateInsert(chkList, price);
+        } catch (Exception e) {
+            System.out.println("=============== Test =============" + e.getMessage());
+        }
     }
 }

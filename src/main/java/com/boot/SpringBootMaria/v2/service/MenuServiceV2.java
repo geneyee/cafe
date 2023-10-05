@@ -6,6 +6,9 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 @Log4j2
@@ -68,10 +71,21 @@ public class MenuServiceV2 {
     }
 
     // 가격 수정 (다중체크) 리팩토링
-    @Transactional
-    public void doUpdateInsert(List<String> chkList, String price) {
+    @Transactional(rollbackFor = Exception.class)
+    public void doUpdateInsert(List<String> chkList, String price) throws FileNotFoundException {
         log.info("============= price multi update, log insert ===============");
+
         menuDaoV2.doUpdatePriceOne(chkList, price);
+
+        // Checked Exception 발생 지점
+//        File file = new File("not_existing_file.txt");
+//        FileInputStream stream = new FileInputStream(file);
+
+        // Unchecked Exception 발생 지점 (ArithmeticException - RuntimeException)
+        int numerator = 1;
+        int denominator = 0;
+        int result = numerator / denominator;
+
         menuDaoV2.doInsertLogOne(chkList, price);
     }
 }

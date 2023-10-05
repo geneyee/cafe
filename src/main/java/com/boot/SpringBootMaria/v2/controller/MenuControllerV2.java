@@ -73,10 +73,14 @@ public class MenuControllerV2 {
     public String doUpdatePrice(@RequestParam("chkCoffeeNo") List<String> chkList,
                                 @RequestParam("hidden_price") String price) {
 
-        if (chkList != null) {
-            menuServiceV2.doUpdateInsert(chkList, price);
+        try {
+            if (chkList != null) {
+                menuServiceV2.doUpdateInsert(chkList, price);
 //            menuServiceV2.doUpdatePriceOne(chkList, price);
 //            menuServiceV2.doInsertLogOne(chkList, price);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         return "redirect:/v2/menu";
     }
