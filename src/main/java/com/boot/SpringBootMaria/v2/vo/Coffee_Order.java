@@ -1,8 +1,7 @@
 package com.boot.SpringBootMaria.v2.vo;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+
 
 @Data
 public class Coffee_Order {
