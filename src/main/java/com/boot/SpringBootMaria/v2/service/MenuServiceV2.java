@@ -2,10 +2,13 @@ package com.boot.SpringBootMaria.v2.service;
 
 import com.boot.SpringBootMaria.v2.dao.MenuDaoV2;
 import com.boot.SpringBootMaria.v2.vo.Coffee_menu;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Log4j2
 @Service
 public class MenuServiceV2 {
 
@@ -64,4 +67,11 @@ public class MenuServiceV2 {
         menuDaoV2.doDelete(no);
     }
 
+    // 가격 수정 (다중체크) 리팩토링
+    @Transactional
+    public void doUpdateInsert(List<String> chkList, String price) {
+        log.info("============= price multi update, log insert ===============");
+        menuDaoV2.doUpdatePriceOne(chkList, price);
+        menuDaoV2.doInsertLogOne(chkList, price);
+    }
 }

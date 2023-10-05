@@ -74,8 +74,9 @@ public class MenuControllerV2 {
                                 @RequestParam("hidden_price") String price) {
 
         if (chkList != null) {
-            menuServiceV2.doUpdatePriceOne(chkList, price);
-            menuServiceV2.doInsertLogOne(chkList, price);
+            menuServiceV2.doUpdateInsert(chkList, price);
+//            menuServiceV2.doUpdatePriceOne(chkList, price);
+//            menuServiceV2.doInsertLogOne(chkList, price);
         }
         return "redirect:/v2/menu";
     }
