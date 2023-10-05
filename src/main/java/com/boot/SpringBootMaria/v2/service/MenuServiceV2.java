@@ -1,25 +1,26 @@
 package com.boot.SpringBootMaria.v2.service;
 
+import com.boot.SpringBootMaria.comm.BootLog;
 import com.boot.SpringBootMaria.comm.MyExceptionRuntime;
 import com.boot.SpringBootMaria.v2.dao.MenuDaoV2;
 import com.boot.SpringBootMaria.v2.vo.Coffee_menu;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.List;
 
 @Log4j2
 @Service
 public class MenuServiceV2 {
 
-    private MenuDaoV2 menuDaoV2;
+    private final MenuDaoV2 menuDaoV2;
+    private final BootLog bootLog;
 
-    public MenuServiceV2(MenuDaoV2 menuDaoV2){
+    public MenuServiceV2(MenuDaoV2 menuDaoV2, BootLog bootLog){
         this.menuDaoV2 = menuDaoV2;
+        this.bootLog = bootLog;
     }
 
     // 전체 메뉴 조회
@@ -72,25 +73,34 @@ public class MenuServiceV2 {
     }
 
     // 가격 수정 (다중체크) 리팩토링
-    @Transactional //(rollbackFor = Exception.class)
+    @Transactional(propagation = Propagation.REQUIRED) //(rollbackFor = Exception.class)
     public void doUpdateInsert(List<String> chkList, String price) throws RuntimeException {
         log.info("============= price multi update, log insert ===============");
 
         try {
             menuDaoV2.doUpdatePriceOne(chkList, price);
+            menuDaoV2.doInsertLogOne(chkList, price);
 
             // Checked Exception 발생 지점
 //        File file = new File("not_existing_file.txt");
 //        FileInputStream stream = new FileInputStream(file);
 
             // Unchecked Exception 발생 지점 (ArithmeticException - RuntimeException)
-//            int numerator = 1;
-//            int denominator = 0;
-//            int result = numerator / denominator;
+            int numerator = 1;
+            int denominator = 0;
+            int result = numerator / denominator;
         } catch (Exception e) {
             //throw new RuntimeException(e.getMessage());
             throw new MyExceptionRuntime(e.getMessage(), getClass().getName());
+        } finally {
+            log.info("================ finally ===============");
+            bootLog.doBootLog(getClass().getName());
         }
-        menuDaoV2.doInsertLogOne(chkList, price);
+
     }
+
+//    @Transactional(propagation = Propagation.REQUIRES_NEW)
+//    public void doBootLog(String strClass){
+//        menuDaoV2.doBootLog(strClass);
+//    }
 }

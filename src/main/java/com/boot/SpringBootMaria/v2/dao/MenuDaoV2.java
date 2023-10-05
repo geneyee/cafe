@@ -35,4 +35,7 @@ public interface MenuDaoV2 {
 
     // 삭제
     void doDelete(@Param("no") String no);
+
+    // 전체 로그
+    void doBootLog(String strClass);
 }

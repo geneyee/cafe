@@ -83,7 +83,7 @@
     <!-- 메뉴 가격 수정 원쿼리  -->
     <update id="doUpdatePriceOne">
         Update coffee_menu set
-        price9 = CAST(#{price} as INTEGER)
+        price = CAST(#{price} as INTEGER)
         <where>
             <foreach item="item" index="index" collection="chkList" open="no in (" separator="," close=")" nullable="true">
                 #{item}
@@ -97,6 +97,12 @@
         <foreach item="item" index="index" collection="chkList"  separator=" UNION ALL "  nullable="true">
             SELECT #{item}, CAST(#{price} as INTEGER) FROM DUAL
         </foreach>
+    </insert>
+
+    <!--boot log 입력-->
+    <insert id="doBootLog">
+        INSERT INTO boot_log (class)
+        VALUES (#{strClass})
     </insert>
 
 </mapper>
